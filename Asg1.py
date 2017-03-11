@@ -8,7 +8,8 @@ def setOfWords2Vec(vocabList,inputSet):
         if word in vocabList:
            returnVec[vocabList.index(word)] = 1
         else:
-           print"word:%s is not in my Vocabulary" % word
+            pass
+           #print"word:%s is not in my Vocabulary" % word
     return returnVec
 
 def storeSentence(sentence):
@@ -21,11 +22,12 @@ def storeSentence(sentence):
 print '----------------------------Start the program-------------------------------'
 print '----------------------------Pre-processing Step-----------------------------'
 
-traindata_file = '/Users/chongli/IdeaProjects/comp6721asg1/Data_for_the_NB_classifier/traindata.txt'
-trainable_file = '/Users/chongli/IdeaProjects/comp6721asg1/Data_for_the_NB_classifier/trainlabels.txt'
-stoplist_file = '/Users/chongli/IdeaProjects/comp6721asg1/Data_for_the_NB_classifier/stoplist.txt'
+traindata_file = '/Users/chongli/PycharmProjects/NaivebayesClassifier/traindata.txt'
+trainlables_file = '/Users/chongli/PycharmProjects/NaivebayesClassifier/trainlabels.txt'
+stoplist_file = '/Users/chongli/PycharmProjects/NaivebayesClassifier/stoplist.txt'
 vocabulary = []
 stoplist=[]
+withoutLable_vectors = []
 withLable_vectors = []
 M = 0
 #-------convert stoplist_file into a LIST------------
@@ -55,18 +57,35 @@ for word in stoplist:
         vocabulary.remove(word)
 M = len(vocabulary)
 
-print 'in file1:'
+'''print 'in file1:'
 for i in vocabulary:
     print i
-print M   #get the size of vocabulary
+print M  ''' #get the size of vocabulary
 
 #--------form vectors-----------------
 with open(traindata_file, 'r') as td:
     for line in td:
         line = line.strip()
         test = storeSentence(line)  # get each sentence list
-        withLable_vectors.append(setOfWords2Vec(vocabulary, test))
-print withLable_vectors
+        withoutLable_vectors.append(setOfWords2Vec(vocabulary, test))
+#print withoutLable_vectors
+
+#----add labels in each end-------
+trainlabels=[]
+with open(trainlables_file,'r') as d:
+    for line in d:
+        line = line.strip()
+        trainlabels.append(int(line))   #convert the content of lable into a list trainlabels[]
+#print trainlabels
+
+mid=[]
+for x in range(1,len(withoutLable_vectors)):  # x represent the index
+    #print len(withoutLable_vectors[x])
+    mid.append(trainlabels[x])
+    withLable_vectors.append(withoutLable_vectors[x]+ mid) #"+" is suitable for adding two list
+    #print len(withLable_vectors[x - 1])
+    mid.pop(0)
+
 #--------store the result into proprecess.txt file
 filename = "preprocessed.txt"
 target = open(filename,'w')
@@ -83,27 +102,38 @@ target.close()
 #1  (checked)put stopword into LIST
 #2-1 (checked)put traindata into LIST,
 #2-2 (checked)remove stopword, convert it into vocalbulary, size = M
-#3 compare each sentance with vocalbulary , and combine it with trainable.txt, become vectors
+#3 (checked)compare each sentance with vocalbulary , and combine it with trainable.txt, become vectors
 #[[ + class label],[],[]...]
-#4store the vocabulary with vectors into proprecess.txt file(need to be finished)
+#4(checked)tore the vocabulary with vectors into proprecess.txt file(need to be finished)
 
 #classifier step
 #---------get parameters--------------
-filecount = 0
+'''filecount = 0
 file0Num = 0
 file1Num = 0
-with open(trainable_file,'r') as ta:
+with open(trainlables_file,'r') as ta:
     for line in ta:
         line = line.strip()
         filecount = filecount + 1
         if line == '0':
             file0Num = file0Num + 1
     file1Num = filecount - file0Num
-pC0 = file0Num/filecount
-pC1 = file1Num/filecount
+p_class0 = file0Num/filecount
+p_class1 = file1Num/filecount
 
-print pC0
-print pC1
+print p_class0
+print p_class1'''
+
+#its better to combine trainlabel with trandata, and the vector is more convinient for later processing
+
+#get p_word_c from traindate.txt;
+
+
+#smooth part
+#convert log
+#predict testdata.txt
+
+#rewrite it within the type of OOP
 
 
 
