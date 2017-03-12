@@ -97,7 +97,6 @@ for item in withLable_vectors: ###################need combine vectors with labe
     target.write('\n')
 target.close()
 
-
 #preprocessing step
 #1  (checked)put stopword into LIST
 #2-1 (checked)put traindata into LIST,
@@ -108,7 +107,7 @@ target.close()
 
 #classifier step
 #---------get parameters--------------
-'''filecount = 0
+filecount = 0
 file0Num = 0
 file1Num = 0
 with open(trainlables_file,'r') as ta:
@@ -122,12 +121,18 @@ p_class0 = file0Num/filecount
 p_class1 = file1Num/filecount
 
 print p_class0
-print p_class1'''
-
-#its better to combine trainlabel with trandata, and the vector is more convinient for later processing
+print p_class1
 
 #get p_word_c from traindate.txt;
-
+#plan to create a dictionary for each class c:{word:count;word:count}
+class0_dic = {}
+class1_dic = {}
+'''how to calculate? there is a stupid method:
+use withLabel_vectors, divide this vectors into class0_vec_list and class1_vec_list.
+for each vec_list, calculate how many words shows in it===>sum of them is the total num of words in class0;
+if we want to calculate a specific word, we need get the index of this word in vocalbulary, use index to check each vector in  class0,
+count the num of word showing times. update the value in class0_dic{}.
+ '''
 
 #smooth part
 #convert log
